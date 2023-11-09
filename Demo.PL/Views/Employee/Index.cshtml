@@ -1,0 +1,113 @@
+﻿@model IEnumerable<EmployeeViewModel>
+@{
+    ViewData["Title"] = "Index";
+    string VDatamessage = ViewData["message"] as string;
+    //Enforce type saftey > require casting[strongly typed]
+    string vbagrmessage = ViewBag.message;
+    //Cannot Enforce type saftey >not require casting[weakly typed]
+
+}
+
+
+<h1>All Employees</h1>
+<br />
+<br />
+
+
+<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">    Create new Employee </a>
+@if (TempData["Message"] is not null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"];
+    </div>
+}
+
+<br />
+<div class="row-justify-content-center align-items-center mt-5">
+    <form asp-action="Index" class="row col-8 offset-1 ">
+        <div class="col-8">
+            <input type="text" class="form-control" name="SearchInput" id="SearchInput" placeholder="Search by name" />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="search" class="btn btn-success" />
+        </div>
+    </form>
+
+</div>
+
+@if (Model.Count() > 0)
+{
+    <table class="mt-4 table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(D=> D.Name)</th>
+                <th>@Html.DisplayNameFor(D=> D.Image)</th>
+                <th>@Html.DisplayNameFor(D=> D.Age)</th>
+                <th>@Html.DisplayNameFor(D=> D.Address)</th>
+                <th>@Html.DisplayNameFor(D=> D.Salary)</th>
+                <th>@Html.DisplayNameFor(D=> D.department)</th>
+                <th>@Html.DisplayNameFor(D=> D.Email)</th>
+                <th>@Html.DisplayNameFor(D=> D.PhoneNumber)</th>
+                <th>@Html.DisplayNameFor(D=> D.HireDate)</th>
+                <th>@Html.DisplayNameFor(D=> D.ISActive)</th>
+
+
+
+
+                <th>Details</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>
+                        <img src="~/Files/Images/@employee.ImageName" width="75" class="image-fluid rounded-circle" />
+
+                    </td>
+                    <td>@employee.Age</td>
+                    <td>@employee.Address</td>
+                    <td>@Html.DisplayFor(e=>employee.Salary)</td>
+                    <td>@Html.DisplayFor(e=>employee.department.Name)</td>
+
+                    <td>@Html.DisplayFor(e=>employee.Email)</td>
+                    <td>@employee.PhoneNumber</td>
+                    <td>@employee.HireDate</td>
+                    <td>
+                        @if(employee.ISActive == true)
+                        {
+                            <i class="fa-solid fa-circle" style="color:green"> </i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-circle" style="color:red"> </i>
+                        }
+
+                    </td>
+
+                    <partial name="_ButtonsPartialView" model="employee.Id.ToString()">
+
+
+
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+
+}
+else
+{
+    <div class="mt-4 alert alert-warning">
+        <h3>
+            There is No employee :(
+        </h3>
+
+    </div>
+}
